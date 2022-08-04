@@ -7,7 +7,7 @@ import MyCamera from "./Camera";
 function HomeScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>REAL dating</Text>
+      <Text style={styles.title}>REAL</Text>
       <Button
         title="Log in"
         onPress={() => {

@@ -1,4 +1,5 @@
-import { Camera } from "expo-camera";
+import { Camera, CameraPictureOptions } from "expo-camera";
+import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
 import { useRef, useState } from "react";
 import {
   StyleSheet,
@@ -98,6 +99,13 @@ export default function MyCamera() {
           onPress={async () => {
             if (cameraRef.current) {
               let photo = await (cameraRef.current as any).takePictureAsync();
+              if (type === 2) {
+                photo = await manipulateAsync(
+                  photo.localUri || photo.uri,
+                  [{ rotate: 180 }, { flip: FlipType.Vertical }],
+                  { compress: 1, format: SaveFormat.PNG }
+                );
+              }
               setLastPhotoURI(photo.uri);
             }
           }}
