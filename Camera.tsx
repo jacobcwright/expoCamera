@@ -9,7 +9,10 @@ import {
   Button,
   ImageBackground,
   TouchableOpacity,
+  Image,
 } from "react-native";
+// @ts-ignore
+import Loading from "./assets/loading.gif";
 
 export default function MyCamera() {
   const [status, requestPermission] = Camera.useCameraPermissions();
@@ -30,7 +33,7 @@ export default function MyCamera() {
     );
   }
 
-  if (lastPhotoURI !== null) {
+  if (lastPhotoURI !== null && lastPhotoURI !== "loading") {
     return (
       <ImageBackground
         source={{ uri: lastPhotoURI }}
@@ -52,7 +55,7 @@ export default function MyCamera() {
             marginLeft: 20,
           }}
           onPress={() => {
-            setLastPhotoURI(null);
+            setLastPhotoURI(null as any);
           }}
         >
           <Text style={{ fontSize: 30, padding: 10, color: "white" }}>❌</Text>
@@ -63,6 +66,21 @@ export default function MyCamera() {
 
   return (
     <Camera style={{ flex: 1 }} type={type} ref={cameraRef}>
+      {lastPhotoURI === "loading" ? (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "transparent",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Text style={styles.loading}>Checking for 🍜...</Text>
+          <Image source={Loading} style={styles.gif} />
+        </View>
+      ) : (
+        <></>
+      )}
       <View
         style={{
           flex: 1,
@@ -98,6 +116,7 @@ export default function MyCamera() {
             marginLeft: 20,
           }}
           onPress={async () => {
+            setLastPhotoURI("loading" as any);
             if (cameraRef.current) {
               let photo = await (cameraRef.current as any).takePictureAsync();
               if (type === 2) {
@@ -117,3 +136,16 @@ export default function MyCamera() {
     </Camera>
   );
 }
+
+const styles = StyleSheet.create({
+  loading: {
+    fontSize: 30,
+    alignSelf: "center",
+    color: "black",
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
+  },
+  gif: {
+    width: 50,
+    height: 50,
+  },
+});
