@@ -1,5 +1,6 @@
 import { Camera, CameraPictureOptions } from "expo-camera";
 import { manipulateAsync, FlipType, SaveFormat } from "expo-image-manipulator";
+import React from "react";
 import { useRef, useState } from "react";
 import {
   StyleSheet,
